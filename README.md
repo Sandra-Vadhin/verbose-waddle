@@ -1,2 +1,2 @@
-# verbose-waddle
-S-system-example
+# BST-S-Sytem-Model-Coagulation
+Biochemical systems theory model of the extrinsic and intrinsic coagulation cascade
