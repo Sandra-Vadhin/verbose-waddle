@@ -201,7 +201,7 @@ function build_default_model_dictionary(model_buffer::Array{String,1})::Dict{Str
     model_dict["number_of_dynamic_states"] = number_of_dynamic_states
     model_dict["number_of_static_states"] = number_of_static_states
     model_dict["list_of_dynamic_species"] = list_of_dynamic_species
-    model_dict["list_of_static_fators"] = list_of_static_species
+    model_dict["list_of_static_factors"] = list_of_static_species
     model_dict["total_species_list"] = total_species_list
     model_dict["static_factors_array"] = static_factors_array
     model_dict["S"] = S
