@@ -10,7 +10,7 @@ using Statistics
 using LinearAlgebra
 
 # load the actual data -
-path_to_experimental_data = joinpath(_PATH_TO_DATA, "Training-Thrombin-TF.csv")
+path_to_experimental_data = joinpath(_PATH_TO_DATA, "Dose_response.csv")
 full_df = CSV.read(path_to_experimental_data, DataFrame)
 (number_of_records, _) = size(full_df) 
 
@@ -19,26 +19,11 @@ data_col_symbols = Symbol.(names(full_df)[1:end])
 number_of_fields = length(data_col_symbols)
 
 # setup scale factor dictionary to convert to concentration units -
-SF = 1e9
+SF = 1e6    #micromolar
 scale_factor_dict = Dict()
-scale_factor_dict[:II] = (1.4e-6)*SF*(1/100)
-scale_factor_dict[:V] = (2e-8)*SF*(1/100)
-scale_factor_dict[:VII] = (1e-8)*SF*(1/100)
-scale_factor_dict[:VIII] = (7e-10)*SF*(1/100)
-scale_factor_dict[:IX] = (9e-8)*SF*(1/100)
-scale_factor_dict[:X] = (1.6e-7)*SF*(1/100)
-scale_factor_dict[:XI] = (1e-8)*SF*(1/100)
-scale_factor_dict[:XII] = (1e-8)*SF*(1/100)
-scale_factor_dict[:AT] = (3.4e-6)*SF*(1/100)
-scale_factor_dict[:PC] = (6.3e-8)*SF*(1/100)
-scale_factor_dict[:TFPI] = 1.0
-scale_factor_dict[:Lagtime] = 1.0
-scale_factor_dict[:Peak] = 1.0
-scale_factor_dict[Symbol("T.Peak")] = 1.0
-scale_factor_dict[:Max] = 1.0
-scale_factor_dict[:AUC] = 1.0
-scale_factor_dict[:subjid] = 1
-scale_factor_dict[:visitid] = 1
+scale_factor_dict[:inducer] = 1000.0    # mM
+scale_factor_dict[:protein] = 1.0       # uM
+#scale_factor_dict[:proteinsd] =1.0
 
 
 # initialize -
@@ -55,28 +40,14 @@ for rᵢ ∈ 1:number_of_records
 
     # create new record -
     transformed_tuple = (
-        subjid = tmp[1], 
-        visitid = tmp[2],
-        II = tmp[3],
-        V = tmp[4],
-        VII = tmp[5],
-        VIII = tmp[6],
-        IX = tmp[7],
-        X = tmp[8],
-        XI = tmp[9],
-        XII = tmp[10],
-        AT = tmp[11],
-        PC = tmp[12],
-        TFPI = tmp[13],
-        Lagtime = tmp[14],
-        Peak = tmp[15],
-        TPeak = tmp[16],
-        Max = tmp[17],
-        AUC = tmp[18]
+        inducer = tmp[1], 
+        protein = tmp[2],
+        #proteinsd = tmp[3],
+     
     )
     push!(transformed_df, transformed_tuple)
 end
 
 # dump sample data to disk -
-path_to_transformed_data = joinpath(_PATH_TO_DATA, "Training-Thrombin-TF-Transformed-w-Labels.csv")
+path_to_transformed_data = joinpath(_PATH_TO_DATA, "Training-dose-response-Transformed-w-Labels.csv")
 CSV.write(path_to_transformed_data, transformed_df)

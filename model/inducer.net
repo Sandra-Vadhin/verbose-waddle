@@ -1,11 +1,11 @@
-// s-law model for IPTG induction of beta-galactosidase
+// s-law model for inducer
 
 #pragma::static
-inducer
+
 #static::end
 
 #pragma::dynamic
-NTP, mRNA, active_repressor, inactive_repressor
+inducer, NTP, mRNA, active_repressor, inactive_repressor,protein
 #dynamic::end
 
 #pragma::structure
@@ -16,6 +16,7 @@ NTP, mRNA, active_repressor, inactive_repressor
 r1, NTP, mRNA
 r2, {inducer,active_repressor}, {inactive_repressor}
 r3, {inactive_repressor}, {inducer,active_repressor}
+r4, mRNA, protein
 #structure::end
 
 #pragma::rate
@@ -25,5 +26,5 @@ r3, {inactive_repressor}, {inducer,active_repressor}
 r1::{NTP,active_repressor}
 r2::{inducer,active_repressor,inactive_repressor}
 r3::{inducer,active_repressor,inactive_repressor}
-
+r4::{mRNA,protein}
 #rate::end
