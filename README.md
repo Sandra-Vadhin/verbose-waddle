@@ -1,1 +1,1 @@
-# BST-S-System-example
+# S-system inducer model
