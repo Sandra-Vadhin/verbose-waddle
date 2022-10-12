@@ -17,36 +17,32 @@ model = build_default_model_dictionary(model_buffer)
 
 # # main simulation loop -
 # SF = 1e9
-# for i ∈ 1:10
+  for i ∈ 1:10
 
     # build new model -
     dd = deepcopy(model)
 
-    # setup static -
+    # # setup static -
     sfa = dd["static_factors_array"]
-    # sfa[1] = training_df[i,:TFPI]       # 1 TFPI
-    # sfa[2] = training_df[i,:AT]         # 2 AT
-    # sfa[3] = (5e-12) * SF               # 3 TF
-    # sfa[6] = 0.005                      # 6 TRAUMA
-
+    sfa[1] = training_df[i, 1]
+    
+    
     # grab the multiplier from the data -
     ℳ = dd["number_of_dynamic_states"]
     xₒ = zeros(ℳ)
-    # xₒ[1] = 1000       # 1 FII 
-    # xₒ[2] = 1000        # 2 FVII 
-    # xₒ[3] = 0          # 3 FV
-    # xₒ[4] =           # 4 FX
-    # xₒ[5] =       # 5 FVIII
-    # xₒ[6] = training_df[i, :IX]         # 6 FIX
-    # xₒ[7] = training_df[i, :XI]         # 7 FXI
-    # xₒ[8] = training_df[i, :XII]        # 8 FXII 
-    # xₒ[9] = (1e-14)*SF                  # 9 FIIa
-    dd["initial_condition_vector"] = xₒ
+    xₒ[1] = 5000.0       # 1 NTP 
+    xₒ[2] = 5000.0        # 2 aa 
+    xₒ[3] = 0.0         # 3 mRNA
+    xₒ[4] = 5000.0          # 4 active repressor
+    xₒ[5] = 0.0          # 5 inactive_repressor
+    xₒ[6] = 0.0          # 6 protein
+      dd["initial_condition_vector"] = xₒ
 
-    # update α -
+    # # update α -
     # α = dd["α"]
-    # α[1] = 0.061
-    # α[2] = 0.70
+    # α[1] = 0.5
+    # α[2] = 1.0
+    # α[3] = 1.0
 
     # # setup -
     # G = dd["G"]
@@ -66,8 +62,8 @@ model = build_default_model_dictionary(model_buffer)
     X = hcat(U...)
     data = [T transpose(X)]
 
-# #     # dump -
-# #     path_to_sim_data = joinpath(_PATH_TO_TMP, "SIM-TF-NO-TM-SYN1K-$(i).dat")
-# #     CSV.write(path_to_sim_data, Tables.table(data))
-# # end
+#     # dump -
+    path_to_sim_data = joinpath(_PATH_TO_TMP, "SIM-dose-response-$(i).dat")
+    CSV.write(path_to_sim_data, Tables.table(data))
+ end
 
