@@ -15,55 +15,59 @@ model_buffer = read_model_file(path_to_model_file)
 # build the default model structure -
 model = build_default_model_dictionary(model_buffer)
 
-# # main simulation loop -
-# SF = 1e9
-  for i ∈ 1:10
+# # # main simulation loop -
+# # SF = 1e9
+#   for i ∈ 1:10
 
-    # build new model -
-    dd = deepcopy(model)
+#     # build new model -
+#     dd = deepcopy(model)
 
-    # # setup static -
-    sfa = dd["static_factors_array"]
-    sfa[1] = training_df[i, 1]
+#     # # setup static -
+#     sfa = dd["static_factors_array"]
+#     sfa[1] = training_df[i, 1]
     
     
-    # grab the multiplier from the data -
-    ℳ = dd["number_of_dynamic_states"]
-    xₒ = zeros(ℳ)
-    xₒ[1] = 5000.0       # 1 NTP 
-    xₒ[2] = 5000.0        # 2 aa 
-    xₒ[3] = 0.0         # 3 mRNA
-    xₒ[4] = 5000.0          # 4 active repressor
-    xₒ[5] = 0.0          # 5 inactive_repressor
-    xₒ[6] = 0.0          # 6 protein
-      dd["initial_condition_vector"] = xₒ
+#     # grab the multiplier from the data -
+#     ℳ = dd["number_of_dynamic_states"]
+#     xₒ = zeros(ℳ)
+#     xₒ[1] = 5000.0       # 1 NTP 
+#     xₒ[2] = 100000.0        # 2 aa 
+#     xₒ[3] = 0.0         # 3 mRNA
+#     xₒ[4] = 10          # 4 active repressor
+#     xₒ[5] = 0.0          # 5 inactive_repressor
+#     xₒ[6] = 0.0          # 6 protein
+#       dd["initial_condition_vector"] = xₒ
 
-    # # update α -
-    # α = dd["α"]
-    # α[1] = 0.5
-    # α[2] = 1.0
-    # α[3] = 1.0
+#     # # update α -
+#     # α = dd["α"]
+#     # α[1] = 0.5
+#     # α[2] = 1.0
+#     # α[3] = 1.0
 
-    # # setup -
-    # G = dd["G"]
-    # idx = indexin(dd, "FVIIa")
-    # G[idx, 4] = 0.1
+#     # setup -
+#     G = dd["G"]
+#     idx = indexin(dd, "active_repressor")
+#     G[idx, 1] = 0.1
 
-    # # what is the index of TRAUMA?
-    # idx = indexin(dd, "AT")
-    # G[idx, 9] = 0.045
+#     idx = indexin(dd, "mRNA")
+#     G[idx, 3] = .5
+    
+
+#     # # what is the index of TRAUMA?
+#     # idx = indexin(dd, "AT")
+#     # G[idx, ] = 0.045
 
 # #     # what is the index of TFPI?
 # #     idx = indexin(dd, "TFPI")
 # #     G[idx, 1] = -0.65
 
-    # run the model -
-    global (T,U) = evaluate(dd)
-    X = hcat(U...)
-    data = [T transpose(X)]
+#     # run the model -
+#     global (T,U) = evaluate(dd)
+#     X = hcat(U...)
+#     data = [T transpose(X)]
 
-#     # dump -
-    path_to_sim_data = joinpath(_PATH_TO_TMP, "SIM-dose-response-$(i).dat")
-    CSV.write(path_to_sim_data, Tables.table(data))
- end
+# #     # dump -
+#     path_to_sim_data = joinpath(_PATH_TO_TMP, "SIM-dose-response-$(i).dat")
+#     CSV.write(path_to_sim_data, Tables.table(data))
+#  end
 

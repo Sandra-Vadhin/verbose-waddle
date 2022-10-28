@@ -33,27 +33,40 @@ function parse_structure_section(buffer::Array{String,1})::Array{Dict{String,Any
     record_array = Array{Dict{String,Any},1}()
 
     for line ∈ buffer
-        
-        # split around the ,
-        record_components = String.(split(line,","))
+
+        # split around the ::
+        record_components = String.(split(line, "::"))
         name = record_components[1]
+         # reactants and prodcuts may be sets of stuff, so we need to split around the ,
+      
         left_phrase = record_components[2]
+        #reactant_list = left_phrase[2:end-1] # this gets rid of the {}
+        reactant_list_components = String.(split(left_phrase,","))
+      
         right_phrase = record_components[3]
+        #product_list = right_phrase[2:end-1] # this gets rid of the {}
+        product_list_components = String.(split(right_phrase,","))
 
         # add -
         tmp_dict = Dict{String,Any}()
         tmp_dict["id"] = name
-        tmp_dict[left_phrase] = -1.0
-        tmp_dict[right_phrase] = 1.0
+                
+        for factor ∈ reactant_list_components
+            tmp_dict[factor] = -1.0
+        end
+        
+        for prod ∈ product_list_components
+            tmp_dict[prod] = 1.0
+        end
+        
 
         # store -
-        push!(record_array,tmp_dict)
+        push!(record_array, tmp_dict)
     end
 
     # return -
     return record_array
 end
-
 function parse_rate_section(buffer::Array{String,1})::Array{Dict{String,Any}}
 
     # initialize -

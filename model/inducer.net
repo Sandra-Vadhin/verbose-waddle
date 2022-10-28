@@ -1,11 +1,11 @@
 // s-law model for inducer
 
 #pragma::static
-inducer
+RNAP, ribosomes
 #static::end
 
 #pragma::dynamic
-NTP, aa, mRNA, active_repressor, inactive_repressor,protein
+NTP, aa, mRNA, inducer, active_repressor, inactive_repressor,protein
 #dynamic::end
 
 #pragma::structure
@@ -13,16 +13,16 @@ NTP, aa, mRNA, active_repressor, inactive_repressor,protein
 // 1. name: reaction name (used in rate section)
 // 2. {reactants}: list of dynamic species acting as a reactants
 // 3. {products}: list of dynamic species acting as a reactants
-r1,NTP,mRNA
-r2,active_repressor,inactive_repressor
-r3,aa,protein
+r1::NTP::mRNA
+r2::active_repressor,inducer::inactive_repressor
+r3::aa::protein
 #structure::end
 
 #pragma::rate
 // name,{factor_1,factor_2,....}
 // 1: name = reaction name (must be in the #pragma::structure section)
 // 2: list of factor symbols (can be both static and dynamic, order does not matter)
-r1::{NTP,active_repressor,inducer,inactive_repressor}
+r1::{NTP,active_repressor,inducer,RNAP}
 r2::{inducer,active_repressor}
-r3::{mRNA,aa}
+r3::{mRNA,aa,ribosomes}
 #rate::end
